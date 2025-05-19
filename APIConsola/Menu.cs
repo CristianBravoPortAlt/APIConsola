@@ -6,6 +6,7 @@ class Menu
     {
         int num = 1;
         string menu = "Seleccione un proveedor para ver sus opciones:\n\n";
+        
         foreach (var proveedor in Program.Proveedores)
             menu += $"\t{num++}. {proveedor}\n";
         Console.WriteLine(menu + $"\t{Program.Proveedores.Length + 1}. Salir");

@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ class Program
             case "2":
                 if (PreguntaDeSeguridad("¿Quieres generar el JSON de productos? (s/n): "))
                 {
+                    Console.Clear();
                     Console.WriteLine("Este proceso puede tardar un tiempo, por favor espera...");
                     await Proveedor.Authenticate();
                     await Proveedor.Products();
@@ -80,34 +82,52 @@ class Program
     static async Task Main(string[] args)
     {
         Console.Clear();
-        if (args.Length == 2)
+        string logPath = "Log/Rendimiento.log";
+        var horaInicio = DateTime.Now;
+        string os = $"OS: {RuntimeInformation.OSDescription}";
+        if (!File.Exists(logPath))
         {
-            await ElegirProveedor(args);
+            Directory.CreateDirectory("Log");
+            File.WriteAllText(logPath, string.Empty);
         }
-        else
-        {
-            Menu.MostrarMenu();
-            int op = Menu.ControlMenu();
-            switch (op - 1)
-            {
-                case 0:
-                    string mensaje = "Argumentos no válidos debe haber dos argumentos (Opción y proovedor), opciones de Proovedor:";
-                    Console.WriteLine(mensaje + "\n" +
-                    new string('-', mensaje.Length) + "\n" +
-                    "1: Crear CSV categorias.\n" +
-                    "2: Generar JSON productos.\n" +
-                    "3: Generar JSON precios.\n" +
-                    "4: Crear CSV de productos.\n\n" +
-                    $"Proveedores: {string.Join(", ", Proveedores)}\n" +
-                    new string('-', 18) + "\n" +
-                    "| Ejemplo: 1 Proveedor |\n" +
-                    new string('-', 18));
-                    break;
-                default:
-                    Console.Clear();
-                    break;
-            }
+        File.AppendAllText(logPath, $"[INICIO] {horaInicio:yyyy-MM-dd HH:mm:ss} | {os}");
 
+        try
+        {
+            if (args.Length == 2)
+            {
+                await ElegirProveedor(args);
+            }
+            else
+            {
+                Menu.MostrarMenu();
+                int op = Menu.ControlMenu();
+                switch (op - 1)
+                {
+                    case 0:
+                        string mensaje = "Argumentos no válidos debe haber dos argumentos (Opción y proovedor), opciones de Proovedor:";
+                        Console.WriteLine(mensaje + "\n" +
+                        new string('-', mensaje.Length) + "\n" +
+                        "1: Crear CSV categorias.\n" +
+                        "2: Generar JSON productos.\n" +
+                        "3: Generar JSON precios.\n" +
+                        "4: Crear CSV de productos.\n\n" +
+                        $"Proveedores: {string.Join(", ", Proveedores)}\n" +
+                        new string('-', 18) + "\n" +
+                        "| Ejemplo: 1 Proveedor |\n" +
+                        new string('-', 18));
+                        break;
+                    default:
+                        Console.Clear();
+                        break;
+                }
+            }
+        }
+        finally
+        {
+            var horaFinal = DateTime.Now;
+            var duracion = horaFinal - horaInicio;
+            File.AppendAllText(logPath, $"\n[FIN] {horaFinal:yyyy-MM-dd HH:mm:ss} | Duración: {duracion} {Environment.NewLine}\n");
         }
     }
 }
