@@ -43,7 +43,7 @@ class Program
                     Console.WriteLine("JSON de productos creado");
                     if (PreguntaDeSeguridad("¿Quieres generar el CSV de productos? (s/n): "))
                     {
-                        Proveedor.CrearCsvProductos();
+                        await Proveedor.CrearCsvProductos();
                         Console.WriteLine("CSV de productos creado");
                     }
                 }
@@ -58,7 +58,7 @@ class Program
                 break;
             case "4":
                 Console.WriteLine("Este proceso puede tardar un tiempo, por favor espera...");
-                Proveedor.CrearCsvProductos();
+                await Proveedor.CrearCsvProductos();
                 Console.WriteLine("CSV de productos creado");
                 break;
             default:
