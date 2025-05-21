@@ -121,7 +121,7 @@ class Proveedor : IProveedor
             var logistics = p.Logistics?.FirstOrDefault();
             var marketing = p.MarketingText?.FirstOrDefault();
 
-            sb.AppendLine($@"{p.ProductId};{mainImage?.Thumbnail ?? string.Empty};{logistics?.Weight ?? 0:0.00};{IVA};{precio.Canon:0.00};{precio.CanonDescription};{precio.Price:0.00};{precio.Pvp:0.00};{p.Category};{p.Manufacturer};{p.Name};{p.Url};{p.Stock};{p.ManufacturerCode};;{marketing?.ShortSummary ?? string.Empty};{p.Ean};{p.CategoryId};{p.SubCategoryId};{p.SubCategory};{p.ProductId};{p.ManufacturerCode};{p.ManufacturerCode};{logistics?.Volume ?? 0:0.00};{marketing?.ShortDescription ?? string.Empty};{marketing?.LongDescription ?? string.Empty};{mainImage?.LargePhoto ?? string.Empty};{mainImage?.SmallPhoto ?? string.Empty};{mainImage?.Thumbnail ?? string.Empty}".Replace("\n", "\\n").Replace("\r", "\\r"));
+            sb.AppendLine($@"{p.ProductId};{mainImage?.Thumbnail ?? string.Empty};{logistics?.Weight ?? 0:0.00};{IVA};{precio.Canon:0.00};{precio.CanonDescription};{precio.Price:0.00};{precio.Pvp:0.00};{p.Category};{p.Manufacturer};{p.Name};{p.Url};{p.Stock};{p.ManufacturerCode};;{marketing?.ShortSummary?.Replace(';', ':') ?? string.Empty};{p.Ean};{p.CategoryId};{p.SubCategoryId};{p.SubCategory};{p.ProductId};{p.ManufacturerCode};{p.ManufacturerCode};{logistics?.Volume ?? 0:0.00};{marketing?.ShortDescription?.Replace(';', ':') ?? string.Empty};{marketing?.LongDescription?.Replace(';', ':') ?? string.Empty};{mainImage?.LargePhoto ?? string.Empty};{mainImage?.SmallPhoto ?? string.Empty};{mainImage?.Thumbnail ?? string.Empty}".Replace("\n", "\\n").Replace("\r", "\\r"));        
         }
         Log.StopLogging("Generando datos");
 
